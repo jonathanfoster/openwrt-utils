@@ -6,18 +6,14 @@ PACKAGES=$(opkg --force-space --noaction install "$1" | grep "http:" | cut -f 2 
 opkg update
 
 echo "Cleaning packages."
-for i in $PACKAGES
-do
+for i in $PACKAGES; do
   LIST=$(wget -qO- "$i" | tar -Oxz ./data.tar.gz | tar -tz | sort -r | sed 's/^./\/overlay\/upper/')
-  for f in $LIST
-  do
-    if [ -f "$f" ]
-    then
+  for f in $LIST; do
+    if [ -f "$f" ]; then
       echo "Removing file $f."
       rm -f "$f"
     fi
-    if [ -d "$f" ]
-    then
+    if [ -d "$f" ]; then
       echo "Try to remove directory $f (will only work on empty directories)."
       rmdir "$f"
     fi

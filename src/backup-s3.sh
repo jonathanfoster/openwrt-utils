@@ -8,19 +8,22 @@ usage() {
   echo "usage: $command -b <aws-backup-bucket> -n <hostname> [-k <aws-access-key-id>] [-s <aws-secret-access-key>] [-r <aws-region>]"
 }
 
-while getopts "b:n:k:s:r:h" flag
-do
-    case "${flag}" in
-        b) aws_backup_bucket=${OPTARG} ;;
-        n) hostname=${OPTARG} ;;
-        k) aws_access_key_id=${OPTARG} ;;
-        s) aws_secret_access_key=${OPTARG} ;;
-        r) aws_region=${OPTARG} ;;
-        h) usage
-           exit 0 ;;
-        *) usage
-           exit 1 ;;
-    esac
+while getopts "b:n:k:s:r:h" flag; do
+  case "${flag}" in
+  b) aws_backup_bucket=${OPTARG} ;;
+  n) hostname=${OPTARG} ;;
+  k) aws_access_key_id=${OPTARG} ;;
+  s) aws_secret_access_key=${OPTARG} ;;
+  r) aws_region=${OPTARG} ;;
+  h)
+    usage
+    exit 0
+    ;;
+  *)
+    usage
+    exit 1
+    ;;
+  esac
 done
 
 if [ -z "$aws_backup_bucket" ]; then
