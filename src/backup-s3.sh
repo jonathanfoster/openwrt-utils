@@ -27,12 +27,12 @@ while getopts "b:n:k:s:r:h" flag; do
 done
 
 if [ -z "$aws_backup_bucket" ]; then
-  echo "$command: AWS backup bucket not set." >&2
+  echo "$command: AWS backup bucket not set" >&2
   exit 1
 fi
 
 if [ -z "$hostname" ]; then
-  echo "$command: Hostname not set." >&2
+  echo "$command: Hostname not set" >&2
   exit 1
 fi
 
@@ -40,7 +40,7 @@ if [ -z "$aws_access_key_id" ]; then
   # shellcheck disable=SC2153
   aws_access_key_id="$AWS_ACCESS_KEY_ID"
   if [ -z "$aws_access_key_id" ]; then
-    echo "$command: AWS access key ID not set." >&2
+    echo "$command: AWS access key ID not set" >&2
     exit 1
   fi
 fi
@@ -49,7 +49,7 @@ if [ -z "$aws_secret_access_key" ]; then
   # shellcheck disable=SC2153
   aws_secret_access_key="$AWS_SECRET_ACCESS_KEY"
   if [ -z "$aws_secret_access_key" ]; then
-    echo "$command: AWS secret access key not set." >&2
+    echo "$command: AWS secret access key not set" >&2
     exit 1
   fi
 fi
@@ -73,11 +73,11 @@ backup_url="https://$aws_backup_bucket.s3.$aws_region.amazonaws.com/$backup_path
 
 trap 'rm $backup_path_local' EXIT
 
-echo "Creating system backup $backup_path_local."
+echo "Creating system backup $backup_path_local"
 mkdir -p "$temp_dir"
 sysupgrade -b "$backup_path_local"
 
-echo "Uploading backup to S3 $backup_url."
+echo "Uploading backup to S3 $backup_url"
 string_to_sign="PUT\n\n$content_type\n$date\n/$backup_path_s3"
 signature=$(echo -n "$string_to_sign" | openssl sha1 -hmac "$aws_secret_access_key" -binary | base64)
 curl -X PUT -T "$backup_path_local" \
